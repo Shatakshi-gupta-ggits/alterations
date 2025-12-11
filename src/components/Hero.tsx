@@ -2,6 +2,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Shield, Sparkles, Clock, MapPin, Calendar, ChevronRight } from "lucide-react";
 import { useRef } from "react";
+import heroTailor from "@/assets/hero-tailor.jpg";
 
 const trustBadges = [
   { icon: Shield, label: "Verified Tailors" },
@@ -177,14 +178,27 @@ export const Hero = () => {
             </div>
           </motion.div>
 
-          {/* Right Content - Booking Widget Mock */}
+          {/* Right Content - Hero Image & Booking Widget */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
             className="relative"
           >
-            <div className="relative mx-auto max-w-md">
+            {/* Hero Image Background */}
+            <div className="absolute inset-0 rounded-3xl overflow-hidden">
+              <motion.img
+                src={heroTailor}
+                alt="Professional tailor at work"
+                className="w-full h-full object-cover opacity-20"
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 1.5 }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-card/50 to-card/30" />
+            </div>
+
+            <div className="relative mx-auto max-w-md z-10">
               {/* Phone Frame */}
               <div className="relative bg-gradient-card rounded-3xl p-1 shadow-lift gold-border">
                 <div className="bg-card rounded-[22px] p-6 space-y-5">
