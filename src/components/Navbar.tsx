@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Scissors, ShoppingCart, User, LogOut, Package, ChevronDown } from "lucide-react";
+import { Menu, X, Scissors, User, LogOut, CalendarCheck, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,7 +23,6 @@ const navLinks = [
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user, signOut } = useAuth();
-  const { totalItems } = useCart();
   const navigate = useNavigate();
 
   const handleSignOut = async () => {
@@ -70,21 +68,6 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <>
-                {/* Cart */}
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="relative"
-                  onClick={() => navigate('/cart')}
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  {totalItems > 0 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
-                      {totalItems}
-                    </span>
-                  )}
-                </Button>
-
                 {/* User Menu */}
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -98,9 +81,9 @@ export const Navbar = () => {
                       <User className="w-4 h-4 mr-2" />
                       My Profile
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => navigate('/orders')}>
-                      <Package className="w-4 h-4 mr-2" />
-                      My Orders
+                    <DropdownMenuItem onClick={() => navigate('/bookings')}>
+                      <CalendarCheck className="w-4 h-4 mr-2" />
+                      My Bookings
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleSignOut} className="text-destructive">
@@ -119,21 +102,6 @@ export const Navbar = () => {
 
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center gap-2">
-            {user && (
-              <Button
-                variant="ghost"
-                size="icon"
-                className="relative"
-                onClick={() => navigate('/cart')}
-              >
-                <ShoppingCart className="w-5 h-5" />
-                {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-primary-foreground text-xs rounded-full flex items-center justify-center">
-                    {totalItems}
-                  </span>
-                )}
-              </Button>
-            )}
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="p-2 text-foreground"
@@ -192,12 +160,12 @@ export const Navbar = () => {
                     transition={{ delay: 0.6 }}
                   >
                     <a
-                      href="/orders"
+                      href="/bookings"
                       onClick={() => setIsOpen(false)}
                       className="flex items-center gap-2 text-lg text-foreground hover:text-primary py-2"
                     >
-                      <Package className="w-5 h-5" />
-                      My Orders
+                      <CalendarCheck className="w-5 h-5" />
+                      My Bookings
                     </a>
                   </motion.div>
                   <motion.div

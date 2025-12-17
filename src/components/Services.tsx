@@ -1,12 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Plus, Check } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
-import { useCart } from "@/hooks/useCart";
+import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 
 // Import service images
 import servicePants from "@/assets/service-pants.jpg";
@@ -76,9 +73,7 @@ export const Services = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [services, setServices] = useState<Service[]>([]);
-  const [addedToCart, setAddedToCart] = useState<Set<string>>(new Set());
-  const { user } = useAuth();
-  const { addToCart, items } = useCart();
+  const [hoveredService, setHoveredService] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -96,21 +91,8 @@ export const Services = () => {
     fetchServices();
   }, []);
 
-  useEffect(() => {
-    // Update addedToCart based on cart items
-    const cartServiceIds = new Set(items.map(item => item.service_id));
-    setAddedToCart(cartServiceIds);
-  }, [items]);
-
-  const handleAddToCart = async (serviceId: string) => {
-    if (!user) {
-      toast.error('Please login to add items to cart');
-      navigate('/auth');
-      return;
-    }
-
-    await addToCart(serviceId);
-    setAddedToCart(prev => new Set(prev).add(serviceId));
+  const handleBookNow = (serviceName: string) => {
+    navigate(`/booking?service=${encodeURIComponent(serviceName)}`);
   };
 
   return (
@@ -144,14 +126,16 @@ export const Services = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {services.map((service) => {
-            const isInCart = addedToCart.has(service.id);
             const icon = iconMap[service.name] || pantIcon;
             const image = imageMap[service.name] || servicePants;
+            const isHovered = hoveredService === service.id;
 
             return (
               <motion.div
                 key={service.id}
                 variants={cardVariants}
+                onMouseEnter={() => setHoveredService(service.id)}
+                onMouseLeave={() => setHoveredService(null)}
                 whileHover={{
                   y: -12,
                   rotateY: 5,
@@ -215,25 +199,21 @@ export const Services = () => {
                         ₹{service.price}
                       </p>
                     </div>
-                    <Button
-                      variant={isInCart ? "outline" : "goldOutline"}
-                      size="sm"
-                      onClick={() => handleAddToCart(service.id)}
-                      disabled={isInCart}
-                      className={isInCart ? "border-green-500 text-green-500" : ""}
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: isHovered ? 1 : 0, x: isHovered ? 0 : 20 }}
+                      transition={{ duration: 0.2 }}
                     >
-                      {isInCart ? (
-                        <>
-                          <Check className="w-4 h-4 mr-1" />
-                          Added
-                        </>
-                      ) : (
-                        <>
-                          <Plus className="w-4 h-4 mr-1" />
-                          Add to Cart
-                        </>
-                      )}
-                    </Button>
+                      <Button
+                        variant="gold"
+                        size="sm"
+                        onClick={() => handleBookNow(service.name)}
+                        className="shadow-gold"
+                      >
+                        Book Now
+                        <ArrowRight className="w-4 h-4 ml-1" />
+                      </Button>
+                    </motion.div>
                   </div>
 
                   {/* Decorative corner */}
