@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Package, Truck, CheckCircle, Clock, MapPin, Calendar, Loader2, FileText } from 'lucide-react';
+import { ArrowLeft, Package, Truck, CheckCircle, Clock, MapPin, Loader2, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
+import { toast } from 'sonner';
 
 interface OrderItem {
   id: string;
@@ -42,7 +43,7 @@ const statusConfig: Record<string, { label: string; color: string; icon: any }> 
   cancelled: { label: 'Cancelled', color: 'bg-red-500/20 text-red-500', icon: Clock },
 };
 
-const Orders = () => {
+const Bookings = () => {
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -73,10 +74,16 @@ const Orders = () => {
       if (error) throw error;
       setOrders(data || []);
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      console.error('Error fetching bookings:', error);
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFasterDelivery = (orderId: string, orderNumber: string) => {
+    toast.success(`Express delivery requested for ${orderNumber}! Additional ₹50 will be added.`, {
+      description: 'Our team will contact you shortly to confirm.'
+    });
   };
 
   const getStatusSteps = (status: string) => {
@@ -110,7 +117,7 @@ const Orders = () => {
             >
               <ArrowLeft className="w-5 h-5" />
             </Button>
-            <h1 className="font-display text-2xl font-bold">My Orders</h1>
+            <h1 className="font-display text-2xl font-bold">My Bookings</h1>
           </div>
         </div>
       </div>
@@ -124,7 +131,7 @@ const Orders = () => {
             className="text-center py-16"
           >
             <Package className="w-16 h-16 mx-auto mb-4 text-muted-foreground" />
-            <h2 className="font-display text-xl font-semibold mb-2">No orders yet</h2>
+            <h2 className="font-display text-xl font-semibold mb-2">No bookings yet</h2>
             <p className="text-muted-foreground mb-6">
               Start by booking your first alteration service
             </p>
@@ -139,6 +146,7 @@ const Orders = () => {
               const StatusIcon = statusInfo.icon;
               const isExpanded = expandedOrder === order.id;
               const steps = getStatusSteps(order.status);
+              const canRequestFaster = ['pending', 'confirmed', 'pickup_scheduled', 'picked_up', 'in_progress'].includes(order.status);
 
               return (
                 <motion.div
@@ -155,7 +163,7 @@ const Orders = () => {
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <p className="text-sm text-muted-foreground">Order</p>
+                        <p className="text-sm text-muted-foreground">Booking</p>
                         <p className="font-display font-semibold text-lg">{order.order_number}</p>
                       </div>
                       <Badge className={statusInfo.color}>
@@ -166,7 +174,7 @@ const Orders = () => {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
-                        <p className="text-muted-foreground">Order Date</p>
+                        <p className="text-muted-foreground">Booking Date</p>
                         <p className="font-medium">
                           {format(new Date(order.created_at), 'dd MMM yyyy')}
                         </p>
@@ -200,7 +208,7 @@ const Orders = () => {
                     >
                       {/* Tracking Progress */}
                       <div className="p-6 bg-card/50">
-                        <h4 className="font-semibold mb-4">Order Tracking</h4>
+                        <h4 className="font-semibold mb-4">Booking Tracking</h4>
                         <div className="flex items-center justify-between relative">
                           <div className="absolute top-4 left-0 right-0 h-0.5 bg-border" />
                           {steps.slice(0, 5).map((step, idx) => {
@@ -250,15 +258,23 @@ const Orders = () => {
                         </div>
                       </div>
 
-                      {/* Actions */}
-                      {order.invoice_url && (
+                      {/* Faster Delivery Button */}
+                      {canRequestFaster && (
                         <div className="p-6 border-t border-border">
-                          <Button variant="outline" className="w-full" asChild>
-                            <a href={order.invoice_url} target="_blank" rel="noopener noreferrer">
-                              <FileText className="w-4 h-4 mr-2" />
-                              Download Invoice
-                            </a>
+                          <Button 
+                            variant="gold" 
+                            className="w-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleFasterDelivery(order.id, order.order_number);
+                            }}
+                          >
+                            <Zap className="w-4 h-4 mr-2" />
+                            Get Faster Delivery (+₹50)
                           </Button>
+                          <p className="text-xs text-muted-foreground text-center mt-2">
+                            Priority processing for quick turnaround
+                          </p>
                         </div>
                       )}
                     </motion.div>
@@ -273,4 +289,4 @@ const Orders = () => {
   );
 };
 
-export default Orders;
+export default Bookings;
