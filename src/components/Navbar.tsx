@@ -93,7 +93,7 @@ export const Navbar = () => {
                 </DropdownMenu>
               </>
             ) : (
-              <Button variant="gold" size="lg" onClick={() => navigate('/auth')}>
+              <Button variant="gold" size="lg" onClick={() => navigate('/booking')}>
                Book Now
               </Button>
             )}
