@@ -179,7 +179,7 @@ const Booking = () => {
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(24);
     doc.setFont("helvetica", "bold");
-    doc.text("MasterFit Alterations", pageWidth / 2, 20, { align: "center" });
+    doc.text("Mister Finisher", pageWidth / 2, 20, { align: "center" });
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
     doc.text("Jabalpur's Trusted Alteration Service", pageWidth / 2, 30, { align: "center" });
@@ -308,14 +308,14 @@ const Booking = () => {
     doc.setTextColor(100, 100, 100);
     doc.setFontSize(9);
     doc.setFont("helvetica", "normal");
-    doc.text("Thank you for choosing MasterFit Alterations!", pageWidth / 2, yPos, { align: "center" });
+    doc.text("Thank you for choosing Mister Finisher!", pageWidth / 2, yPos, { align: "center" });
     yPos += 5;
     doc.text("We will contact you shortly to confirm your pickup.", pageWidth / 2, yPos, { align: "center" });
     yPos += 5;
-    doc.text("For queries, call: +91 XXXXX XXXXX", pageWidth / 2, yPos, { align: "center" });
+    doc.text("For queries, call: +91 98765 43210", pageWidth / 2, yPos, { align: "center" });
     
     // Save PDF
-    doc.save(`MasterFit-Invoice-${orderNumber}.pdf`);
+    doc.save(`MisterFinisher-Invoice-${orderNumber}.pdf`);
   }, [formData, date, time, selectedServices, totalAmount]);
 
   const onFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -329,9 +329,10 @@ const Booking = () => {
 
     // Add services info
     const servicesText = selectedServices
-      .map((s) => `${s.name} x${s.quantity} = ₹${s.price * s.quantity}`)
-      .join(", ");
-    formDataToSubmit.set("services", servicesText);
+      .map((s) => `${s.name} (Qty: ${s.quantity}) - ₹${s.price * s.quantity}`)
+      .join("\n");
+    formDataToSubmit.set("services_details", servicesText);
+    formDataToSubmit.set("total_items_count", selectedServices.reduce((acc, curr) => acc + curr.quantity, 0).toString());
     formDataToSubmit.set("total_amount", `₹${totalAmount}`);
     formDataToSubmit.set("place", formData.place);
 
