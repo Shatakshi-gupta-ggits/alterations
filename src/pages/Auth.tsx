@@ -9,6 +9,7 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+import SEO from '@/components/SEO';
 
 const phoneSchema = z.string()
   .min(10, 'Phone number must be at least 10 digits')
@@ -127,6 +128,12 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <SEO 
+        title="Login"
+        description="Sign in to Mister Finisher to book alterations, track orders, and manage your profile."
+        keywords="login, sign in, alteration booking, Jabalpur tailoring"
+        canonicalUrl="/auth"
+      />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
