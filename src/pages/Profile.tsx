@@ -8,6 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
+import SEO from '@/components/SEO';
 
 interface Profile {
   full_name: string;
@@ -155,6 +156,12 @@ const Profile = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="My Profile"
+        description="Manage your profile, contact details, and delivery address for Mister Finisher alteration services."
+        keywords="profile, account settings, delivery address, contact details"
+        canonicalUrl="/profile"
+      />
       {/* Header */}
       <div className="bg-gradient-card border-b border-border">
         <div className="container mx-auto px-4 py-6">

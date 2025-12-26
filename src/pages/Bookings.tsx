@@ -8,7 +8,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { supabase } from '@/integrations/supabase/client';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
-
+import SEO from '@/components/SEO';
 interface OrderItem {
   id: string;
   service_name: string;
@@ -106,6 +106,12 @@ const Bookings = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="My Bookings"
+        description="Track your alteration orders with Mister Finisher. View order status, expected delivery, and request faster delivery."
+        keywords="order tracking, alteration status, booking history, Jabalpur tailoring"
+        canonicalUrl="/bookings"
+      />
       {/* Header */}
       <div className="bg-gradient-card border-b border-border">
         <div className="container mx-auto px-4 py-6">
