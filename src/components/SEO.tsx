@@ -15,7 +15,7 @@ const defaultMeta = {
   title: 'Mister Finisher - Premium Door-to-Door Alteration Service in Jabalpur',
   description: 'Professional clothing alteration and tailoring services in Jabalpur. Expert fitting for pants, shirts, dresses, kurtis, blazers & ethnic wear. Free pickup & delivery!',
   keywords: 'tailoring Jabalpur, alteration service, clothing alterations, pants alteration, shirt fitting, dress alterations, kurti alterations, blazer fitting, ethnic wear alterations, door to door tailoring',
-  baseUrl: 'https://mrfinisher.lovable.app',
+  baseUrl: 'https://mrfinisher.com',
   ogImage: '/og-image.jpg',
 };
 

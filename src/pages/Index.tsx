@@ -12,7 +12,7 @@ const servicesStructuredData = {
   '@type': 'LocalBusiness',
   name: 'Mister Finisher',
   description: 'Professional door-to-door clothing alteration and tailoring services in Jabalpur',
-  url: 'https://mrfinisher.lovable.app',
+  url: 'https://mrfinisher.com',
   telephone: '+91-98765-43210',
   address: {
     '@type': 'PostalAddress',
