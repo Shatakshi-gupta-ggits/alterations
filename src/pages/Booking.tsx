@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { jsPDF } from "jspdf";
+import SEO from "@/components/SEO";
 
 const timeSlots = [
   "09:00 AM",
@@ -398,6 +399,13 @@ const Booking = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO 
+        title="Book Pickup"
+        description="Schedule a free pickup for your clothing alterations. Select services, choose pickup time, and we'll collect from your doorstep in Jabalpur."
+        keywords="book alteration, schedule pickup, free pickup, clothing alterations Jabalpur"
+        canonicalUrl="/booking"
+        ogType="service"
+      />
       {/* Header */}
       <div className="bg-gradient-card border-b border-border sticky top-0 z-40">
         <div className="container mx-auto px-4 py-4">
