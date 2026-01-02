@@ -10,7 +10,7 @@ import { useRef } from "react";
 const faqs = [
   {
     question: "What areas do you serve?",
-    answer: "We currently operate in major metropolitan areas including Mumbai, Delhi, Bangalore, Pune, and Hyderabad. We're expanding rapidly — enter your pincode on our booking form to check availability in your area.",
+    answer: "We currently operate in Jabalpur. We're expanding rapidly — enter your pincode on our booking form to check availability in your area.",
   },
   {
     question: "How long does the alteration take?",
