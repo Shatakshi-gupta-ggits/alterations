@@ -101,6 +101,7 @@ const Booking = () => {
   const [selectedServices, setSelectedServices] = useState<SelectedService[]>([]);
 
   const [formData, setFormData] = useState({
+    customerName: "",
     houseNumber: "",
     streetArea: "",
     place: "",
@@ -229,6 +230,26 @@ const Booking = () => {
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     doc.setTextColor(139, 92, 42);
+    doc.text("CUSTOMER DETAILS", 20, yPos);
+    yPos += 8;
+    
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Name: ${formData.customerName}`, 20, yPos);
+    yPos += 6;
+    doc.text(`Primary Phone: ${formData.phone1}`, 20, yPos);
+    yPos += 6;
+    if (formData.phone2) {
+      doc.text(`Alternate Phone: ${formData.phone2}`, 20, yPos);
+      yPos += 6;
+    }
+    yPos += 6;
+    
+    // Pickup Address Section
+    doc.setFontSize(12);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(139, 92, 42);
     doc.text("PICKUP ADDRESS", 20, yPos);
     yPos += 8;
     
@@ -242,24 +263,7 @@ const Booking = () => {
     doc.text(`Place: ${formData.place}`, 20, yPos);
     yPos += 6;
     doc.text(`Pincode: ${formData.pincode}`, 20, yPos);
-    yPos += 12;
-    
-    // Contact Details
-    doc.setFontSize(12);
-    doc.setFont("helvetica", "bold");
-    doc.setTextColor(139, 92, 42);
-    doc.text("CONTACT DETAILS", 20, yPos);
-    yPos += 8;
-    
-    doc.setTextColor(0, 0, 0);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text(`Primary Phone: ${formData.phone1}`, 20, yPos);
     yPos += 6;
-    if (formData.phone2) {
-      doc.text(`Alternate Phone: ${formData.phone2}`, 20, yPos);
-      yPos += 6;
-    }
     if (formData.mapLink) {
       doc.text(`Map Link: ${formData.mapLink}`, 20, yPos);
       yPos += 6;
@@ -356,6 +360,7 @@ const Booking = () => {
     formDataToSubmit.set("total_items_count", selectedServices.reduce((acc, curr) => acc + curr.quantity, 0).toString());
     formDataToSubmit.set("total_amount", `₹${totalAmount}`);
     formDataToSubmit.set("place", formData.place);
+    formDataToSubmit.set("customer_name", formData.customerName);
 
     await handleSubmit(formDataToSubmit);
   };
@@ -513,6 +518,28 @@ const Booking = () => {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Customer Information */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 mb-4">
+                <Phone className="w-5 h-5 text-primary" />
+                <h3 className="font-display font-semibold text-lg">Customer Information</h3>
+              </div>
+
+              <div>
+                <Label htmlFor="customerName">Full Name *</Label>
+                <Input
+                  id="customerName"
+                  name="customerName"
+                  placeholder="e.g., John Doe"
+                  value={formData.customerName}
+                  onChange={handleInputChange}
+                  required
+                  className="mt-1.5"
+                />
+                <ValidationError prefix="Customer Name" field="customerName" errors={state.errors} />
+              </div>
             </div>
 
             {/* Address */}
@@ -736,7 +763,7 @@ const Booking = () => {
               variant="gold"
               size="lg"
               className="w-full"
-              disabled={state.submitting || !date || !time || selectedServices.length === 0 || !formData.place}
+              disabled={state.submitting || !date || !time || selectedServices.length === 0 || !formData.place || !formData.customerName}
             >
               {state.submitting ? (
                 <>
