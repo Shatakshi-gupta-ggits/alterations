@@ -532,7 +532,7 @@ const Booking = () => {
                 <Input
                   id="customerName"
                   name="customerName"
-                  placeholder="e.g., John Doe"
+                  placeholder="Type your Full Name here.."
                   value={formData.customerName}
                   onChange={handleInputChange}
                   required
@@ -555,7 +555,7 @@ const Booking = () => {
                   <Input
                     id="houseNumber"
                     name="houseNumber"
-                    placeholder="e.g., 42-A, Flat 301"
+                    placeholder="Type your full Address here... e.g., 42-A, Flat 301"
                     value={formData.houseNumber}
                     onChange={handleInputChange}
                     required
@@ -605,7 +605,7 @@ const Booking = () => {
                     <Input
                       id="pincode"
                       name="pincode"
-                      placeholder="e.g., 482001"
+                      placeholder="Type your area Pincode here... e.g., 482001"
                       value={formData.pincode}
                       onChange={handleInputChange}
                       required
@@ -738,7 +738,7 @@ const Booking = () => {
                   onChange={handleInputChange}
                   className="mt-1.5"
                 />
-                <p className="text-xs text-muted-foreground mt-1">Share your exact location for faster pickup</p>
+                <p className="text-xs text-muted-foreground mt-1">Share your exact location using Google map for faster pickup</p>
               </div>
             </div>
 
